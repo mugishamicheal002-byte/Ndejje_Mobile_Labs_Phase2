@@ -63,9 +63,21 @@ fun HoistedAmountInput(
 }
 @Preview
 @Composable
-fun BrokenInputPreview() {
-    MoMoCalculatorAppTheme {
-        HoistedAmountInput(amount = "", onAmountChange = {})
+fun PreviewEmptyInput() {
+     HoistedAmountInput(amount = "", onAmountChange = {})
 
-    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewFilled(){
+    HoistedAmountInput(amount = "50000", onAmountChange = {})
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewError(){
+    HoistedAmountInput(amount = "micheal", onAmountChange = {}, isError = true)
+
+
 }
