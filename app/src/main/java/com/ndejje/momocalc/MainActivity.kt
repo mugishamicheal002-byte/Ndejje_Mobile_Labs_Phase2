@@ -34,33 +34,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-@Composable
-fun InternalStateInput(){
-    var amount by remember { mutableStateOf("50000") }
 
-    TextField(
-        value = amount,
-        onValueChange = { amount = it },
-        label = {
-            Text(stringResource(R.string.enter_amount))
-
-        }
-    )
-
-}
-
-@Composable
-fun BrokenInput(){
-    var amount = "0"
-    TextField(
-        value = amount,
-        onValueChange = { amount = it },
-        label = {
-            Text(stringResource(R.string.enter_amount))
-
-        }
-    )
-}
 @Composable
 fun HoistedAmountInput(
     amount: String,
@@ -91,6 +65,7 @@ fun HoistedAmountInput(
 @Composable
 fun BrokenInputPreview() {
     MoMoCalculatorAppTheme {
-        BrokenInput()
+        HoistedAmountInput(amount = "", onAmountChange = {})
+
     }
 }
