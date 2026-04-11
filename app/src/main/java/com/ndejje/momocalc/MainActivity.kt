@@ -49,32 +49,34 @@ fun MoMoCalcScreen(){
     var isCalculating by remember { mutableStateOf(false) }
     var showResult by remember { mutableStateOf(false) }
 
-    LaunchedEffect(amountInput) {
-        if (amountInput.isEmpty()) {
-            isCalculating = false
-            showResult = false
-            return@LaunchedEffect
-        }
-        // 1. Reset states when user starts typing again
-        showResult = false
-        isCalculating = false
-
-        // 2. Wait for 1 second of inactivity
-        delay(1000)
-
-        // 3. Show "Calculating..."
-        isCalculating = true
-
-        // 4. Simulate a network call for 500ms
-        delay(500)
-
-        // 5. Done! Show the result
-        isCalculating = false
-        showResult = true
-    }
 
     val numericAmount = amountInput.toDoubleOrNull()
     val isError = amountInput.isNotEmpty() && numericAmount == null
+
+
+    LaunchedEffect(amountInput) {
+        // Reset the UI when input changes
+        showResult = false
+        isCalculating = false
+
+        // Only proceed if there is valid input and no error
+        if (amountInput.isNotEmpty() && !isError) {
+            // Wait 1 second after last keystroke
+            delay(1000)
+
+            // Show "Calculating..."
+            isCalculating = true
+
+            // Simulate network/processing delay
+            delay(500)
+
+            // Show the final result
+            isCalculating = false
+            showResult = true
+        }
+    }
+
+
     val rate = if ((numericAmount ?: 0.0) < 2500000) 0.03 else 0.015
     val fee = (numericAmount ?: 0.0) * rate
     val formattedFee = "UGX %,.0f".format(fee)
