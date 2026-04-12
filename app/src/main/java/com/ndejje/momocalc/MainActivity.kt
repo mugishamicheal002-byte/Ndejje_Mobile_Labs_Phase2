@@ -26,13 +26,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ndejje.momocalc.ui.theme.MoMoCalculatorAppTheme
 import kotlinx.coroutines.delay
-import java.lang.reflect.Modifier
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +89,7 @@ fun MoMoCalcScreen(){
     Column(
         modifier = Modifier
             .fillMaxSize() // Crucial: Takes up the whole screen so items can be centered
-            .padding(24.dp),
+            .padding(dimensionResource(R.dimen.screen_padding)),
         verticalArrangement = Arrangement.Center, // Centers items vertically (top to bottom)
         horizontalAlignment = Alignment.CenterHorizontally // Centers items horizontally (left to right)
     ) {
@@ -99,7 +99,9 @@ fun MoMoCalcScreen(){
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(
+            dimensionResource(R.dimen.spacing_large)
+        ))
 
         HoistedAmountInput(
             amount = amountInput,
@@ -109,7 +111,9 @@ fun MoMoCalcScreen(){
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(
+            dimensionResource(R.dimen.spacing_medium)
+        ))
 
         // UI Logic for loading vs. result
         when {
