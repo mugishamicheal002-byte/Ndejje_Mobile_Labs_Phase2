@@ -1,5 +1,6 @@
 package com.ndejje.momocalc
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -61,38 +62,26 @@ class MainActivity : ComponentActivity() {
         }
     }
 @Composable
-fun MoMoCalcScreen(modifier: Modifier = Modifier){
+fun MoMoCalcScreen(modifier: Modifier = Modifier) {
     var amountInput by remember { mutableStateOf("") }
     var isCalculating by remember { mutableStateOf(false) }
     var showResult by remember { mutableStateOf(false) }
 
-
     val numericAmount = amountInput.toDoubleOrNull()
     val isError = amountInput.isNotEmpty() && numericAmount == null
 
-
     LaunchedEffect(amountInput) {
-        // Reset the UI when input changes
         showResult = false
         isCalculating = false
 
-        // Only proceed if there is valid input and no error
         if (amountInput.isNotEmpty() && !isError) {
-            // Wait 1 second after last keystroke
             delay(1000)
-
-            // Show "Calculating..."
             isCalculating = true
-
-            // Simulate network/processing delay
             delay(500)
-
-            // Show the final result
             isCalculating = false
             showResult = true
         }
     }
-
 
     val rate = if ((numericAmount ?: 0.0) < 2500000) 0.03 else 0.015
     val fee = (numericAmount ?: 0.0) * rate
@@ -100,10 +89,10 @@ fun MoMoCalcScreen(modifier: Modifier = Modifier){
 
     Column(
         modifier = modifier
-            .fillMaxSize() // Crucial: Takes up the whole screen so items can be centered
+            .fillMaxSize()
             .padding(dimensionResource(R.dimen.screen_padding)),
-        verticalArrangement = Arrangement.Center, // Centers items vertically (top to bottom)
-        horizontalAlignment = Alignment.CenterHorizontally // Centers items horizontally (left to right)
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = stringResource(R.string.app_name),
@@ -111,21 +100,16 @@ fun MoMoCalcScreen(modifier: Modifier = Modifier){
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(
-            dimensionResource(R.dimen.spacing_large)
-        ))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_large)))
 
         HoistedAmountInput(
             amount = amountInput,
             onAmountChange = { amountInput = it },
             isError = isError,
-            // Ensure your HoistedAmountInput accepts a Modifier if you want it full width
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(
-            dimensionResource(R.dimen.spacing_medium)
-        ))
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.spacing_medium)))
 
         // UI Logic for loading vs. result
         when {
@@ -138,11 +122,18 @@ fun MoMoCalcScreen(modifier: Modifier = Modifier){
                 )
             }
             showResult && !isError && amountInput.isNotEmpty() -> {
-                Text(
-                    text = stringResource(R.string.fee_label, formattedFee),
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center
-                )
+                Surface(
+                    shape = MaterialTheme.shapes.medium,
+                    color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(R.string.fee_label, formattedFee),
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(dimensionResource(R.dimen.spacing_medium))
+                    )
+                }
             }
         }
     }
@@ -206,8 +197,17 @@ fun MoMoTopBar() {
         )
     )
 }
-@Preview(showBackground = true)
+@Preview(name = "Fee Card – Light", showBackground = true)
+@Preview(
+    name = "Fee Card – Dark",
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
-fun MoMoCalcPreview() {
-    MaterialTheme { MoMoCalcScreen() }
+fun PreviewFeeCard() {
+    MoMoAppTheme {
+        Surface(modifier = Modifier.padding(16.dp)) {
+            MoMoCalcScreen()
+        }
+    }
 }

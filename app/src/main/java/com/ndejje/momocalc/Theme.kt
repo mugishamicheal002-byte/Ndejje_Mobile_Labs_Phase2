@@ -40,14 +40,14 @@ private val LightColorScheme = lightColorScheme(
     onError         = OnErrorWhite
 )
 
-@Composable//revisitting needed
+@Composable//revisiting needed
 fun MoMoAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(), // auto-detect by default
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
     MaterialTheme(
-        colorScheme = LightColorScheme,
+        colorScheme = colorScheme,
         typography  = MoMoTypography,   // from Module 5 Typography.kt
         shapes      = MoMoShapes,        // from Part D below
         content     = content
